@@ -17,13 +17,13 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Recommended Frameworks for Mobility Dashboards
 
-- **Ruby on Rails**
+- **Ruby on Rails** (Ruby)
   - ✔ Muy bueno para consumir APIs REST y crear dashboards de movilidad.
-- **Django**
+- **Django** (Python)
   - ✔ Perfecto para procesar datos JSON y crear sistemas administrativos.
-- **Spring MVC**
+- **Spring MVC** (Java)
   - ✔ Ideal para apps empresariales con datos de transporte.
-- **ASP.NET MVC**
+- **ASP.NET MVC** (C#)
   - ✔ Muy usado en sistemas gubernamentales (similar a movilidad urbana).
-- **CodeIgniter**
+- **CodeIgniter** (PHP)
   - ✔ Ligero y fácil para proyectos simples con esta API.
