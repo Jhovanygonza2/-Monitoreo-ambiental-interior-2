@@ -33,3 +33,12 @@ If you are developing a production application, we recommend using TypeScript wi
   - ✔ Uno de los primeros en estructurar apps frontend.
 - **Ember.js** (JavaScript)
   - ✔ Muy potente en su época para aplicaciones complejas.
+- **Swift** (Swift)
+  - ✔ Para apps iOS que consuman la API.
+  - ✔ Código limpio y moderno (.swift).
+- **Dart** (Dart)
+  - ✔ Usado con Flutter.
+  - ✔ Ideal para apps móviles de movilidad (.dart).
+- **.NET Core** (C# moderno)
+  - ✔ Versión moderna de .NET.
+  - ✔ Muy potente para APIs (.cs).

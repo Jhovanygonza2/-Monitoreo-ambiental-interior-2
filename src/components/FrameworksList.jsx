@@ -50,6 +50,24 @@ const frameworks = [
     language: "JavaScript",
     description: "Muy potente en su época para aplicaciones complejas.",
     color: "from-orange-600 to-red-700"
+  },
+  {
+    name: "Swift",
+    language: "Swift",
+    description: "Para apps iOS que consuman la API con código limpio y moderno.",
+    color: "from-orange-500 to-rose-500"
+  },
+  {
+    name: "Dart",
+    language: "Dart",
+    description: "Usado con Flutter, ideal para apps móviles de movilidad.",
+    color: "from-cyan-400 to-blue-500"
+  },
+  {
+    name: ".NET Core",
+    language: "C# moderno",
+    description: "Versión moderna de .NET, muy potente para APIs.",
+    color: "from-purple-600 to-indigo-700"
   }
 ];
 
