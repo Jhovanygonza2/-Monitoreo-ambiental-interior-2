@@ -20,11 +20,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import MobilityMap from './components/MobilityMap';
 import StatsCard from './components/StatsCard';
 import AvailabilityChart, { ComparisonChart } from './components/Charts';
+import FrameworksList from './components/FrameworksList';
 
 const App = () => {
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('Bicycle');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedStation, setSelectedStation] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -66,9 +68,10 @@ const App = () => {
   }, [stations, searchQuery]);
 
   const navItems = [
-    { id: 'Bicycle', icon: <Bike size={20} />, label: 'Bicycles' },
-    { id: 'Parking', icon: <Car size={20} />, label: 'Parking' },
-    { id: 'EChargingStation', icon: <BatteryCharging size={20} />, label: 'E-Charging' },
+    { id: 'Bicycle', icon: <Bike size={20} />, label: 'Bicycles', type: 'network' },
+    { id: 'Parking', icon: <Car size={20} />, label: 'Parking', type: 'network' },
+    { id: 'EChargingStation', icon: <BatteryCharging size={20} />, label: 'E-Charging', type: 'network' },
+    { id: 'Resources', icon: <Info size={20} />, label: 'Frameworks', type: 'info' },
   ];
 
   return (
@@ -93,16 +96,21 @@ const App = () => {
             <button
               key={item.id}
               onClick={() => {
-                setSelectedType(item.id);
+                if (item.type === 'info') {
+                  setActiveTab('info');
+                } else {
+                  setActiveTab('dashboard');
+                  setSelectedType(item.id);
+                }
                 setSearchQuery('');
               }}
               className={`w-full flex items-center gap-4 p-3 rounded-xl transition-all duration-200 ${
-                selectedType === item.id 
+                (activeTab === 'info' && item.type === 'info') || (activeTab === 'dashboard' && selectedType === item.id && item.type !== 'info')
                   ? 'bg-blue-600/10 text-blue-400 border border-blue-600/20' 
                   : 'text-slate-400 hover:bg-white/5 hover:text-white'
               }`}
             >
-              <span className={selectedType === item.id ? 'text-blue-400' : ''}>
+              <span className={(activeTab === 'info' && item.type === 'info') || (activeTab === 'dashboard' && selectedType === item.id && item.type !== 'info') ? 'text-blue-400' : ''}>
                 {item.icon}
               </span>
               {isSidebarOpen && <span className="font-medium">{item.label}</span>}
@@ -131,8 +139,12 @@ const App = () => {
         <header className="h-20 border-b border-white/5 px-8 flex items-center justify-between bg-[#14161f]/50 backdrop-blur-md z-10">
           <div className="flex items-center gap-8">
             <div>
-              <h1 className="text-2xl font-bold font-outfit">{selectedType} Network</h1>
-              <p className="text-slate-400 text-sm">Real-time monitoring</p>
+              <h1 className="text-2xl font-bold font-outfit">
+                {activeTab === 'info' ? 'Resource Hub' : `${selectedType} Network`}
+              </h1>
+              <p className="text-slate-400 text-sm">
+                {activeTab === 'info' ? 'Technology stack recommendations' : 'Real-time monitoring'}
+              </p>
             </div>
             
             <div className="relative group hidden md:block">
@@ -158,68 +170,88 @@ const App = () => {
           </div>
         </header>
 
-        {/* Dashboard Grid */}
+        {/* Dashboard Grid / Frameworks List */}
         <div className="flex-1 p-8 overflow-y-auto custom-scrollbar">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full min-h-[900px]">
-            {/* Stats row */}
-            <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-              <StatsCard 
-                title="Total Stations" 
-                value={loading ? '...' : filteredStations.length} 
-                icon={<MapIcon className="text-blue-400" />}
-                trend="+2.4%"
-              />
-              <StatsCard 
-                title="Avg Availability" 
-                value="68%" 
-                icon={<BarChart3 className="text-indigo-400" />}
-                trend="+5.1%"
-              />
-              <StatsCard 
-                title="Network Status" 
-                value="Optimal" 
-                icon={<Activity className="text-green-400" />}
-                trend="Healthy"
-              />
-            </div>
-
-            {/* Map Section */}
-            <div className="lg:col-span-8 glass relative overflow-hidden group min-h-[500px]">
-              {loading && (
-                <div className="absolute inset-0 z-[1000] bg-[#14161f]/40 backdrop-blur-sm flex items-center justify-center">
-                  <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin"></div>
+          <AnimatePresence mode="wait">
+            {activeTab === 'info' ? (
+              <motion.div
+                key="info"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="max-w-4xl mx-auto"
+              >
+                <FrameworksList />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="dashboard"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full min-h-[900px]"
+              >
+                {/* Stats row */}
+                <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <StatsCard 
+                    title="Total Stations" 
+                    value={loading ? '...' : filteredStations.length} 
+                    icon={<MapIcon className="text-blue-400" />}
+                    trend="+2.4%"
+                  />
+                  <StatsCard 
+                    title="Avg Availability" 
+                    value="68%" 
+                    icon={<BarChart3 className="text-indigo-400" />}
+                    trend="+5.1%"
+                  />
+                  <StatsCard 
+                    title="Network Status" 
+                    value="Optimal" 
+                    icon={<Activity className="text-green-400" />}
+                    trend="Healthy"
+                  />
                 </div>
-              )}
-              <MobilityMap 
-                stations={filteredStations} 
-                selectedStation={selectedStation}
-                onStationSelect={setSelectedStation}
-              />
-            </div>
 
-            {/* Data Analysis Section */}
-            <div className="lg:col-span-4 flex flex-col gap-6">
-              <div className="flex-1 glass p-6 flex flex-col">
-                <h3 className="font-outfit text-lg mb-6 flex items-center gap-2">
-                  <BarChart3 size={18} className="text-blue-400" />
-                  Availability Trends
-                </h3>
-                <div className="flex-1 min-h-[250px]">
-                  <AvailabilityChart />
+                {/* Map Section */}
+                <div className="lg:col-span-8 glass relative overflow-hidden group min-h-[500px]">
+                  {loading && (
+                    <div className="absolute inset-0 z-[1000] bg-[#14161f]/40 backdrop-blur-sm flex items-center justify-center">
+                      <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin"></div>
+                    </div>
+                  )}
+                  <MobilityMap 
+                    stations={filteredStations} 
+                    selectedStation={selectedStation}
+                    onStationSelect={setSelectedStation}
+                  />
                 </div>
-              </div>
 
-              <div className="flex-1 glass p-6 flex flex-col">
-                <h3 className="font-outfit text-lg mb-6 flex items-center gap-2">
-                  <Activity size={18} className="text-indigo-400" />
-                  Mobility Comparison
-                </h3>
-                <div className="flex-1 min-h-[250px]">
-                  <ComparisonChart />
+                {/* Data Analysis Section */}
+                <div className="lg:col-span-4 flex flex-col gap-6">
+                  <div className="flex-1 glass p-6 flex flex-col">
+                    <h3 className="font-outfit text-lg mb-6 flex items-center gap-2">
+                      <BarChart3 size={18} className="text-blue-400" />
+                      Availability Trends
+                    </h3>
+                    <div className="flex-1 min-h-[250px]">
+                      <AvailabilityChart />
+                    </div>
+                  </div>
+
+                  <div className="flex-1 glass p-6 flex flex-col">
+                    <h3 className="font-outfit text-lg mb-6 flex items-center gap-2">
+                      <Activity size={18} className="text-indigo-400" />
+                      Mobility Comparison
+                    </h3>
+                    <div className="flex-1 min-h-[250px]">
+                      <ComparisonChart />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
 
