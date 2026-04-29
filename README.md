@@ -27,3 +27,9 @@ If you are developing a production application, we recommend using TypeScript wi
   - ✔ Muy usado en sistemas gubernamentales (similar a movilidad urbana).
 - **CodeIgniter** (PHP)
   - ✔ Ligero y fácil para proyectos simples con esta API.
+- **jQuery** (JavaScript)
+  - ✔ Revolucionó JavaScript simplificando el DOM (antes de React/Vue).
+- **Backbone.js** (JavaScript)
+  - ✔ Uno de los primeros en estructurar apps frontend.
+- **Ember.js** (JavaScript)
+  - ✔ Muy potente en su época para aplicaciones complejas.

@@ -32,6 +32,24 @@ const frameworks = [
     language: "PHP",
     description: "Ligero y fácil para proyectos simples con esta API.",
     color: "from-orange-500 to-red-600"
+  },
+  {
+    name: "jQuery",
+    language: "JavaScript",
+    description: "Revolucionó JavaScript simplificando el DOM (antes de React/Vue).",
+    color: "from-blue-400 to-cyan-500"
+  },
+  {
+    name: "Backbone.js",
+    language: "JavaScript",
+    description: "Uno de los primeros en estructurar apps frontend.",
+    color: "from-blue-700 to-indigo-800"
+  },
+  {
+    name: "Ember.js",
+    language: "JavaScript",
+    description: "Muy potente en su época para aplicaciones complejas.",
+    color: "from-orange-600 to-red-700"
   }
 ];
 
